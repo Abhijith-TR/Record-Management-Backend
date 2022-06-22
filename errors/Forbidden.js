@@ -3,7 +3,7 @@ const CustomError = require("./CustomError");
 
 class ForbiddenError extends CustomError {
   constructor(message) {
-    this.message = message;
+    super(message);
     this.statusCode = StatusCodes.FORBIDDEN;
   }
 }
