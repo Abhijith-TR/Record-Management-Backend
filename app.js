@@ -9,15 +9,17 @@ const loginRouter = require("./routes/login");
 const userDataRouter = require("./routes/user");
 const adminDataRouter = require("./routes/admin");
 const errorHandler = require("./middleware/errorHandler");
-const authorize = require("./middleware/authenticate");
+const authorizeUser = require("./middleware/authenticateUser");
+const authorizeAdmin = require("./middleware/authenticateAdmin");
+const isAdmin = require("./middleware/isAdmin");
 
 // allow data to be processed as json in req.body
 app.use(express.json());
 
 // routers
 app.use("/api/authorize", loginRouter);
-app.use("/api/user", authorize, userDataRouter);
-app.use("/api/admin", authorize, adminDataRouter);
+app.use("/api/user", [authorizeUser], userDataRouter);
+app.use("/api/admin", [authorizeAdmin, isAdmin], adminDataRouter);
 
 // middleware
 app.use(errorHandler);

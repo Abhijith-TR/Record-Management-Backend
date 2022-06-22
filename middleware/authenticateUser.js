@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authorize = (req, res, next) => {
+const authorizeUser = (req, res, next) => {
   const jsonToken = req.headers.authorization;
   if (!jsonToken || !jsonToken.startsWith("Bearer ")) {
     throw new Error("Invalid token");
@@ -12,6 +12,7 @@ const authorize = (req, res, next) => {
       userId: payload.userId,
       name: payload.name,
       entryNumber: payload.entryNumber,
+      isAdmin: payload.isAdmin,
     };
     next();
   } catch (error) {
@@ -19,4 +20,4 @@ const authorize = (req, res, next) => {
   }
 };
 
-module.exports = authorize;
+module.exports = authorizeUser;

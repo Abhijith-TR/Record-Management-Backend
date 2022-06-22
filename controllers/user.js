@@ -20,10 +20,6 @@ const userLogin = async (req, res) => {
 };
 
 const userRegister = async (req, res) => {
-  console.log(req.user.entryNumber);
-  if (typeof req.user.entryNumber !== "undefined") {
-    return res.status(StatusCodes.FORBIDDEN).send({ msg: "Access Denied" });
-  }
   const { name, entryNumber, degree } = req.body;
   const email = entryNumber + process.env.COLLEGE;
   const password = entryNumber.toLowerCase();
