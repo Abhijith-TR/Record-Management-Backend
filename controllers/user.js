@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const { StatusCodes } = require("http-status-codes");
 
-const login = async (req, res) => {
+const userLogin = async (req, res) => {
   let { email, password } = req.body;
   email = email.toLowerCase();
   if (!email || !password) {
@@ -19,9 +19,13 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ email, token });
 };
 
-const register = async (req, res) => {
+const userRegister = async (req, res) => {
+  console.log(req.user.entryNumber);
+  if (typeof req.user.entryNumber !== "undefined") {
+    return res.status(StatusCodes.FORBIDDEN).send({ msg: "Access Denied" });
+  }
   const { name, entryNumber, degree } = req.body;
-  const email = entryNumber + "@iitrpr.ac.in";
+  const email = entryNumber + process.env.COLLEGE;
   const password = entryNumber.toLowerCase();
   const user = await User.create({
     name,
@@ -34,6 +38,6 @@ const register = async (req, res) => {
 };
 
 module.exports = {
-  login,
-  register,
+  userLogin,
+  userRegister,
 };

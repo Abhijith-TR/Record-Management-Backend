@@ -5,7 +5,9 @@ const express = require("express");
 const app = express();
 const connectToDB = require("./db/db");
 
-const userRouter = require("./routes/user");
+const loginRouter = require("./routes/login");
+const userDataRouter = require("./routes/user");
+const adminDataRouter = require("./routes/admin");
 const errorHandler = require("./middleware/errorHandler");
 const authorize = require("./middleware/authenticate");
 
@@ -13,7 +15,9 @@ const authorize = require("./middleware/authenticate");
 app.use(express.json());
 
 // routers
-app.use("/api/authorize", userRouter);
+app.use("/api/authorize", loginRouter);
+app.use("/api/user", authorize, userDataRouter);
+app.use("/api/admin", authorize, adminDataRouter);
 
 // middleware
 app.use(errorHandler);

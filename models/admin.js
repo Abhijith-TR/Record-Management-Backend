@@ -12,6 +12,7 @@ const AdminSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter an email"],
     lowercase: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -21,7 +22,7 @@ const AdminSchema = new mongoose.Schema({
 });
 
 AdminSchema.pre("save", async function () {
-  const salt = await bcrypt.salt(10);
+  const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
