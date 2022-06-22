@@ -7,6 +7,7 @@ const connectToDB = require("./db/db");
 
 const userRouter = require("./routes/user");
 const errorHandler = require("./middleware/errorHandler");
+const authorize = require("./middleware/authenticate");
 
 // allow data to be processed as json in req.body
 app.use(express.json());

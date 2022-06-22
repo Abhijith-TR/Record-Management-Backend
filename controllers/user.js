@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const nodemailer = require("nodemailer");
 const { StatusCodes } = require("http-status-codes");
 
 const login = async (req, res) => {
@@ -34,12 +33,7 @@ const register = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "User Created" });
 };
 
-const changePassword = (req, res) => {
-  res.send("Change password");
-};
-
 module.exports = {
   login,
   register,
-  changePassword,
 };
