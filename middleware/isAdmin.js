@@ -1,8 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
+const { ForbiddenError } = require("../errors");
 
 const isAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Access Denied" });
+    throw new ForbiddenError("User cannot access this resource");
   }
   next();
 };

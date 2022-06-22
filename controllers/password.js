@@ -2,21 +2,18 @@ const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
+const { UnauthenticatedError, BadRequestError } = require("../errors");
 
 const changeUserPassword = async (req, res) => {
   let { password, newPassword } = req.body;
   const { userId: _id, name } = req.user;
   if (!password) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid password" });
+    throw new BadRequestError("Invalid Password");
   }
   const checkUser = await User.findById({ _id });
   const isPasswordCorrect = await checkUser.comparePassword(password);
   if (!isPasswordCorrect) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "Incorrect password" });
+    throw new UnauthenticatedError("Password Incorrect");
   }
   const salt = await bcrypt.genSalt(10);
   newPassword = await bcrypt.hash(newPassword, salt);
@@ -29,9 +26,7 @@ const changeUserPassword = async (req, res) => {
     }
   );
   if (!user) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Something went wrong" });
+    throw new UnauthenticatedError("Invalid Username");
   }
   res.status(StatusCodes.OK).json({ msg: "Password updated" });
 };
@@ -40,16 +35,12 @@ const changeAdminPassword = async (req, res) => {
   let { password, newPassword } = req.body;
   const { adminId: _id, name } = req.user;
   if (!password) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid password" });
+    throw new BadRequestError("Invalid Password");
   }
   const checkAdmin = await Admin.findById({ _id });
   const isPasswordCorrect = await checkAdmin.comparePassword(password);
   if (!isPasswordCorrect) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "Incorrect password" });
+    throw new UnauthenticatedError("Password Incorrect");
   }
   const salt = await bcrypt.genSalt(10);
   newPassword = await bcrypt.hash(newPassword, salt);
@@ -62,9 +53,7 @@ const changeAdminPassword = async (req, res) => {
     }
   );
   if (!admin) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Something went wrong" });
+    throw new UnauthenticatedError("Invalid Username");
   }
   res.status(StatusCodes.OK).json({ msg: "Password updated" });
 };

@@ -1,27 +1,25 @@
 const Admin = require("../models/admin");
 const { StatusCodes } = require("http-status-codes");
+const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new Error("Invalid email or password");
+    throw new BadRequestError("Please enter valid username and password");
   }
   const admin = await Admin.findOne({ email });
   if (!admin) {
-    throw new Error("Access Denied");
+    throw new UnauthenticatedError("Access Denied");
   }
   const isPasswordCorrect = await admin.comparePassword(password);
   if (!isPasswordCorrect) {
-    throw new Error("Invalid username or password");
+    throw new UnauthenticatedError("Invalid Username or Password");
   }
   const token = admin.createJWT();
   res.status(StatusCodes.OK).json({ email, token });
 };
 
 const adminRegister = async (req, res) => {
-  if (req.user.entryNumber === undefined) {
-    return res.status(StatusCodes.FORBIDDEN).send({ msg: "Access Denied " });
-  }
   const { name, email } = req.body;
   const password = process.env.PASS;
   const admin = await Admin.create({ name, email, password });

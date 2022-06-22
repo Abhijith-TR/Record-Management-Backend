@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
+const { UnauthenticatedError, BadRequestError } = require("../errors");
 
 const authorizeAdmin = (req, res, next) => {
   const jsonToken = req.headers.authorization;
   if (!jsonToken || !jsonToken.startsWith("Bearer ")) {
-    throw new Error("Invalid token");
+    throw new BadRequestError("Access denied");
   }
   const token = jsonToken.split(" ")[1];
   try {
