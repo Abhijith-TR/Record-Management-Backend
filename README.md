@@ -16,7 +16,7 @@
   3. JWT_LIFETIME - Json Web Token lifetime
   4. PASS - Default password setup for admins
   5. COLLEGE - Default mail terminator for users (non admins). e.g. @iitxyz.ac.in
-     <br><br>
+     <br>
 
 - Setup email, password and user name for the super admin in start.js. Run `node start.js`
 
