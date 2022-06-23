@@ -15,12 +15,12 @@ const CourseNameSchema = new mongoose.Schema({
 });
 
 CourseNameSchema.pre("save", function () {
-  let name = this.name.split(" ");
+  let name = this.subjectName.split(" ");
   name = name.map(
     (item) => item[0].toUpperCase() + item.slice(1).toLowerCase()
   );
   name = name.join(" ");
-  this.name = name;
+  this.subjectName = name;
 });
 
-module.export = mongoose.model("CourseName", CourseNameSchema);
+module.exports = mongoose.model("CourseName", CourseNameSchema);

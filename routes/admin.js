@@ -11,6 +11,7 @@ const {
   deleteRecord,
   deleteAllRecord,
   createRecord,
+  createSubject,
 } = require("../controllers/data");
 
 router.route("/register/admin").post(adminRegister);
@@ -18,13 +19,14 @@ router.route("/register/user").post(userRegister);
 router.route("/change").patch(changeAdminPassword);
 router
   .route("/records")
-  .post(createRecord)
-  .patch(updateRecord)
   .delete(deleteAllRecord)
-  .get(showRecords);
+  .get(showRecords)
+  .post(createSubject);
 router
   .route("/records/:entryNumber")
   .delete(deleteRecord)
-  .get(showSingleRecord);
+  .get(showSingleRecord)
+  .patch(updateRecord)
+  .post(createRecord);
 
 module.exports = router;
