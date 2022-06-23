@@ -1,6 +1,12 @@
 const Admin = require("../models/admin");
+const Data = require("../models/data");
+const mongoose = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const {
+  BadRequestError,
+  UnauthenticatedError,
+  NotFoundError,
+} = require("../errors");
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -26,7 +32,25 @@ const adminRegister = async (req, res) => {
   res.status(StatusCodes.CREATED).send({ msg: "Admin created" });
 };
 
+const adminRemove = async (req, res) => {
+  const { email } = req.params;
+  const check = await Admin.findOne({ email });
+  const val = check._id;
+  const replace = new mongoose.Types.ObjectId(req.user.adminId);
+  const data = await Data.updateMany(
+    { createdBy: val },
+    { createdBy: replace },
+    { runValidators: true, new: true }
+  );
+  const admin = await Admin.deleteOne({ email });
+  if (admin.deletedCount === 0) {
+    throw new NotFoundError("Admin not found with given email");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Admin removed" });
+};
+
 module.exports = {
   adminLogin,
   adminRegister,
+  adminRemove,
 };

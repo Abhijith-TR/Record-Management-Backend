@@ -1,6 +1,11 @@
 const User = require("../models/user");
+const Data = require("../models/data");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError } = require("../errors");
+const {
+  BadRequestError,
+  UnauthenticatedError,
+  NotFoundError,
+} = require("../errors");
 
 const userLogin = async (req, res) => {
   let { email, password } = req.body;
@@ -34,7 +39,21 @@ const userRegister = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "User Created" });
 };
 
+const userRemove = async (req, res) => {
+  const { entryNumber } = req.params;
+  if (typeof entryNumber === undefined) {
+    throw new BadRequestError("Invalid entry number");
+  }
+  const user = await User.deleteOne({ entryNumber });
+  if (user.deletedCount === 0) {
+    throw new NotFoundError("No such user found");
+  }
+  const data = await Data.deleteMany({ entryNumber });
+  res.status(StatusCodes.OK).json({ msg: "User and records deleted" });
+};
+
 module.exports = {
   userLogin,
   userRegister,
+  userRemove,
 };

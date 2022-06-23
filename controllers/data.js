@@ -23,16 +23,15 @@ const showRecords = async (req, res) => {
   }
   let records = await Data.find({ subjectCode })
     .sort("entryNumber")
-    .select("subjectCode subjectName grade entryNumber");
+    .select("subjectCode subjectName grade entryNumber semester");
   records = records.map((item) => {
-    const { subjectCode, subjectName, grade, entryNumber } = item;
+    const { subjectCode, subjectName, grade, entryNumber, semester } = item;
     return { subjectCode, subjectName, grade, entryNumber, semester };
   });
   res.status(StatusCodes.OK).json({
     msg: "Records returned",
     records,
     number: records.length,
-    semester,
   });
 };
 
@@ -77,7 +76,7 @@ const updateRecord = async (req, res) => {
   if (!check) {
     throw new NotFoundError("No such record found to update");
   }
-  if (check.createdBy !== req.user.adminId) {
+  if (!req.user.isSuper && check.createdBy.toString() !== req.user.adminId) {
     throw new ForbiddenError("Cannot modify record inserted by another user");
   }
   const data = await Data.findOneAndUpdate(
@@ -99,7 +98,7 @@ const deleteRecord = async (req, res) => {
   if (!check) {
     throw new NotFoundError("No such record found to update");
   }
-  if (check.createdBy !== req.user.adminId) {
+  if (!req.user.isSuper && check.createdBy.toString() !== req.user.adminId) {
     throw new ForbiddenError("Cannot modify record inserted by another user");
   }
   const data = await Data.deleteOne({ entryNumber, subjectCode });
