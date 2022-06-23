@@ -17,16 +17,13 @@ const {
 router.route("/register/admin").post(adminRegister);
 router.route("/register/user").post(userRegister);
 router.route("/change").patch(changeAdminPassword);
-router
-  .route("/records")
-  .delete(deleteAllRecord)
-  .get(showRecords)
-  .post(createSubject);
+router.route("/records").post(createSubject);
+router.route("/records/:subjectCode").get(showRecords).delete(deleteAllRecord);
 router
   .route("/records/:entryNumber")
   .delete(deleteRecord)
-  .get(showSingleRecord)
   .patch(updateRecord)
   .post(createRecord);
+router.route("/records/get/:entryNumber").get(showSingleRecord);
 
 module.exports = router;

@@ -42,6 +42,11 @@ const DataSchema = new mongoose.Schema({
     minlength: 11,
     uppercase: true,
   },
+  semester: {
+    type: Number,
+    required: [true, "Please provide the semester"],
+    enum: [1, 2, 3, 4, 5, 6, 7, 8],
+  },
 });
 
 DataSchema.index({ subjectCode: 1, entryNumber: 1 }, { unique: true });
