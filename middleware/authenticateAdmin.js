@@ -13,6 +13,7 @@ const authorizeAdmin = (req, res, next) => {
       adminId: payload.adminId,
       name: payload.name,
       isAdmin: payload.isAdmin,
+      isSuper: payload.isSuper,
     };
     next();
   } catch (error) {

@@ -19,6 +19,10 @@ const AdminSchema = new mongoose.Schema({
     required: [true, "Please enter password"],
     minlength: 8,
   },
+  superAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 AdminSchema.pre("save", async function () {
@@ -28,7 +32,12 @@ AdminSchema.pre("save", async function () {
 
 AdminSchema.methods.createJWT = function () {
   return jwt.sign(
-    { adminId: this._id, name: this.name, isAdmin: true },
+    {
+      adminId: this._id,
+      name: this.name,
+      isAdmin: true,
+      isSuper: this.superAdmin,
+    },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_LIFETIME,

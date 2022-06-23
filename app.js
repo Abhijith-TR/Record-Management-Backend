@@ -9,6 +9,7 @@ const connectToDB = require("./db/db");
 const loginRouter = require("./routes/login");
 const userDataRouter = require("./routes/user");
 const adminDataRouter = require("./routes/admin");
+const superAdminRouter = require("./routes/superAdmin");
 
 // middleware
 const errorHandler = require("./middleware/errorHandler");
@@ -16,6 +17,7 @@ const authorizeUser = require("./middleware/authenticateUser");
 const authorizeAdmin = require("./middleware/authenticateAdmin");
 const isAdmin = require("./middleware/isAdmin");
 const isUser = require("./middleware/isUser");
+const isSuper = require("./middleware/isSuper");
 
 // allows data to be processed as json in req.body
 app.use(express.json());
@@ -24,6 +26,7 @@ app.use(express.json());
 app.use("/api/authorize", loginRouter);
 app.use("/api/user", [authorizeUser, isUser], userDataRouter);
 app.use("/api/admin", [authorizeAdmin, isAdmin], adminDataRouter);
+app.use("/api/super", [authorizeAdmin, isSuper], superAdminRouter);
 
 // middleware
 app.use(errorHandler);
