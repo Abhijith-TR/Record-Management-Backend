@@ -6,6 +6,7 @@ const {
   BadRequestError,
   NotFoundError,
   UnauthenticatedError,
+  ForbiddenError,
 } = require("../errors");
 
 // separate from show records for an individual person to prevent
@@ -64,8 +65,27 @@ const showSingleRecord = async (req, res) => {
     .json({ msg: "Records returned", records, number: records.length });
 };
 
-const updateRecord = (req, res) => {
-  res.send("Update single record");
+const updateRecord = async (req, res) => {
+  let { entryNumber, subjectCode } = req.params;
+  const { grade } = req.body;
+  entryNumber = entryNumber.toUpperCase();
+  subjectCode = subjectCode.toUpperCase();
+  if (!entryNumber || !subjectCode) {
+    throw new BadRequestError("Invalid entry number or subject code");
+  }
+  const check = await Data.findOne({ entryNumber, subjectCode });
+  if (!check) {
+    throw new NotFoundError("No such record found to update");
+  }
+  if (check.createdBy !== req.user.adminId) {
+    throw new ForbiddenError("Cannot modify record inserted by another user");
+  }
+  const data = await Data.findOneAndUpdate(
+    { entryNumber, subjectCode },
+    { grade },
+    { new: true, runValidators: true }
+  );
+  res.status(StatusCodes.OK).json({ msg: "Record updated" });
 };
 
 const deleteRecord = async (req, res) => {
@@ -75,10 +95,14 @@ const deleteRecord = async (req, res) => {
   if (!entryNumber || !subjectCode) {
     throw new BadRequestError("Enter valid entry number and subject code");
   }
-  const data = await Data.deleteOne({ entryNumber, subjectCode });
-  if (data.deletedCount === 0) {
-    throw new NotFoundError("No record with given specifications");
+  const check = await Data.findOne({ entryNumber, subjectCode });
+  if (!check) {
+    throw new NotFoundError("No such record found to update");
   }
+  if (check.createdBy !== req.user.adminId) {
+    throw new ForbiddenError("Cannot modify record inserted by another user");
+  }
+  const data = await Data.deleteOne({ entryNumber, subjectCode });
   res.status(StatusCodes.OK).json({ msg: "Successfully deleted record" });
 };
 
@@ -92,12 +116,10 @@ const deleteAllRecord = async (req, res) => {
   if (data.deletedCount === 0) {
     throw new NotFoundError("No records with given specifications");
   }
-  res
-    .status(StatusCodes.OK)
-    .json({
-      msg: "Successfully deleted records",
-      deleteCount: data.deletedCount,
-    });
+  res.status(StatusCodes.OK).json({
+    msg: "Successfully deleted records",
+    deleteCount: data.deletedCount,
+  });
 };
 
 const createRecord = async (req, res) => {

@@ -19,8 +19,11 @@ router.route("/register/user").post(userRegister);
 router.route("/change").patch(changeAdminPassword);
 router.route("/records").post(createSubject);
 router.route("/records/:subjectCode").get(showRecords).delete(deleteAllRecord);
-router.route("/records/:entryNumber").patch(updateRecord).post(createRecord);
+router.route("/records/:entryNumber").post(createRecord);
 router.route("/records/get/:entryNumber").get(showSingleRecord);
-router.route("/records/:entryNumber/:subjectCode").delete(deleteRecord);
+router
+  .route("/records/:entryNumber/:subjectCode")
+  .delete(deleteRecord)
+  .patch(updateRecord);
 
 module.exports = router;
