@@ -68,12 +68,36 @@ const updateRecord = (req, res) => {
   res.send("Update single record");
 };
 
-const deleteRecord = (req, res) => {
-  res.send("Delete single record");
+const deleteRecord = async (req, res) => {
+  let { entryNumber, subjectCode } = req.params;
+  entryNumber = entryNumber.toUpperCase();
+  subjectCode = subjectCode.toUpperCase();
+  if (!entryNumber || !subjectCode) {
+    throw new BadRequestError("Enter valid entry number and subject code");
+  }
+  const data = await Data.deleteOne({ entryNumber, subjectCode });
+  if (data.deletedCount === 0) {
+    throw new NotFoundError("No record with given specifications");
+  }
+  res.status(StatusCodes.OK).json({ msg: "Successfully deleted record" });
 };
 
-const deleteAllRecord = (req, res) => {
-  res.send("Delete all instances of a subject");
+const deleteAllRecord = async (req, res) => {
+  let { subjectCode } = req.params;
+  subjectCode = subjectCode.toUpperCase();
+  if (!subjectCode) {
+    throw new BadRequestError("Invalid subject code");
+  }
+  const data = await Data.deleteMany({ subjectCode });
+  if (data.deletedCount === 0) {
+    throw new NotFoundError("No records with given specifications");
+  }
+  res
+    .status(StatusCodes.OK)
+    .json({
+      msg: "Successfully deleted records",
+      deleteCount: data.deletedCount,
+    });
 };
 
 const createRecord = async (req, res) => {
