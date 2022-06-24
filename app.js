@@ -11,6 +11,11 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
 
+// // swagger
+// const swaggerUI = require("swagger-ui-express");
+// const YAML = require("yamljs");
+// const swaggerDoc = YAML.load("./docs.yaml");
+
 // importing routers
 const loginRouter = require("./routes/login");
 const userDataRouter = require("./routes/user");
@@ -47,13 +52,15 @@ app.use("/api/user", [authorizeUser, isUser], userDataRouter);
 app.use("/api/admin", [authorizeAdmin, isAdmin], adminDataRouter);
 app.use("/api/super", [authorizeAdmin, isSuper], superAdminRouter);
 
+// testing route
+app.get("/", (req, res) => {
+  res.send("<h1>Hello There!</h1>");
+});
+// app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+
 // middleware
 app.use(errorHandler);
 app.use(handleMissingRoute);
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 
 // port selection
 const port = process.env.PORT || 3000;

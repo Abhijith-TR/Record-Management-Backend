@@ -4,12 +4,13 @@ const DataSchema = new mongoose.Schema({
   subjectCode: {
     type: String,
     required: [true, "Please enter subject code"],
-    minlength: 5,
+    minlength: 3,
     uppercase: true,
   },
   subjectName: {
     type: String,
     required: [true, "Please enter course name"],
+    minlength: 3,
   },
   grade: {
     type: String,

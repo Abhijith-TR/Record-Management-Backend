@@ -13,6 +13,7 @@ const AdminSchema = new mongoose.Schema({
     required: [true, "Please enter an email"],
     lowercase: true,
     unique: true,
+    minlength: 5,
   },
   password: {
     type: String,
