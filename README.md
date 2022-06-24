@@ -36,3 +36,4 @@
 - All paths apart from user login and admin login require the JWT that the server sends back in order to be accessed.
 - Kindly set up a unguessable random string as the JWT_SECRET.
 - Kindly change the minlengths set up in various models if your particular use case involves the use of shorter names, email ids or entry numbers
+- Kindly mail 2020csb1062@iitrpr.ac.in if you find ways to access resources that should not be allowed.
