@@ -5,6 +5,12 @@ const express = require("express");
 const app = express();
 const connectToDB = require("./db/db");
 
+// security packages
+const helmet = require("helmet");
+const cors = require("cors");
+const xss = require("xss-clean");
+const rateLimiter = require("express-rate-limit");
+
 // importing routers
 const loginRouter = require("./routes/login");
 const userDataRouter = require("./routes/user");
@@ -18,6 +24,19 @@ const authorizeAdmin = require("./middleware/authenticateAdmin");
 const isAdmin = require("./middleware/isAdmin");
 const isUser = require("./middleware/isUser");
 const isSuper = require("./middleware/isSuper");
+const handleMissingRoute = require("./middleware/catch404");
+
+app.set("trust proxy", 1);
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    max: 1000,
+  })
+);
+app.use(express.json());
+app.use(helmet());
+app.use(cors());
+app.use(xss());
 
 // allows data to be processed as json in req.body
 app.use(express.json());
@@ -30,6 +49,11 @@ app.use("/api/super", [authorizeAdmin, isSuper], superAdminRouter);
 
 // middleware
 app.use(errorHandler);
+app.use(handleMissingRoute);
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 // port selection
 const port = process.env.PORT || 3000;

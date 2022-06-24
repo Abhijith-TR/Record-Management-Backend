@@ -7,7 +7,7 @@
 
 ## How to setup
 
-- Run `npm install`
+- Run `npm install` to install all dependancies.
 
 - Set up a .env file and set up the following environment variables
 
@@ -22,4 +22,6 @@
 
 - Login using the super admin credentials. You are ready to start using the API.
 
-## API Requests
+- NOTE: You can optionally set up a PORT in .env to run it on your local machine. The default port on the local machine will be 3000.
+
+## API Methods

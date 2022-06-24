@@ -96,7 +96,7 @@ const deleteRecord = async (req, res) => {
   }
   const check = await Data.findOne({ entryNumber, subjectCode });
   if (!check) {
-    throw new NotFoundError("No such record found to update");
+    throw new NotFoundError("No such record found to delete");
   }
   if (!req.user.isSuper && check.createdBy.toString() !== req.user.adminId) {
     throw new ForbiddenError("Cannot modify record inserted by another user");
