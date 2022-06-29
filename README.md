@@ -31,6 +31,9 @@
 
 - Detailed documentation can be found [here](https://irms-server.herokuapp.com/docs/)
 
+## API Details
+- If request is made to set up the admin, default password will be PASS. If request is made to set up the user, the default password will be the entry number in lowercase.
+
 ## Additional Information
 
 - All paths apart from user login and admin login require the JWT that the server sends back in order to be accessed.
