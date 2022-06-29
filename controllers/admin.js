@@ -22,7 +22,10 @@ const adminLogin = async (req, res) => {
     throw new UnauthenticatedError("Invalid Username or Password");
   }
   const token = admin.createJWT();
-  res.status(StatusCodes.OK).json({ email, token });
+  let isAdmin;
+  if (admin.superAdmin) isAdmin = 2;
+  else isAdmin = 1;
+  res.status(StatusCodes.OK).json({ email, token, isAdmin });
 };
 
 const adminRegister = async (req, res) => {

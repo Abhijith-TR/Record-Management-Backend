@@ -22,7 +22,7 @@ const userLogin = async (req, res) => {
     throw new UnauthenticatedError("Invalid Username or Password");
   }
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ email, token });
+  res.status(StatusCodes.OK).json({ email, token, isAdmin: 0 });
 };
 
 const userRegister = async (req, res) => {
