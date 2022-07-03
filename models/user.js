@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
     lowercase: true,
-    minlength: 5,
   },
   degree: {
     type: String,

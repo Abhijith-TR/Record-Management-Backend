@@ -11,10 +11,10 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
 
-// // swagger
-// const swaggerUI = require("swagger-ui-express");
-// const YAML = require("yamljs");
-// const swaggerDoc = YAML.load("./docs.yaml");
+// swagger
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDoc = YAML.load("./docs.yaml");
 
 // importing routers
 const loginRouter = require("./routes/login");
@@ -54,9 +54,9 @@ app.use("/api/super", [authorizeAdmin, isSuper], superAdminRouter);
 
 // testing route
 app.get("/", (req, res) => {
-  res.send("<h1>Hello There!</h1>");
+  res.send("<h1>Hello There!</h1><a href='/docs'>API Documentation</a>");
 });
-// app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 // middleware
 app.use(errorHandler);

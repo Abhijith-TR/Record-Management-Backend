@@ -6,13 +6,13 @@ const CourseNameSchema = new mongoose.Schema({
     required: [true, "Please enter course code"],
     uppercase: true,
     unique: true,
-    minlength: 3,
+    minlength: 5,
   },
   subjectName: {
     type: String,
     required: [true, "Please enter course name"],
     unique: true,
-    minlength: 3,
+    minlength: 2,
   },
 });
 

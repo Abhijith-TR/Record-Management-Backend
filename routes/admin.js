@@ -4,6 +4,11 @@ const router = express.Router();
 const { userRegister } = require("../controllers/user");
 const { changeAdminPassword } = require("../controllers/password");
 const {
+  postAnnouncement,
+  removeAnnouncement,
+  getAnnouncements,
+} = require("../controllers/announcement");
+const {
   showRecords,
   showSingleRecord,
   updateRecord,
@@ -22,5 +27,8 @@ router
   .route("/records/:entryNumber/:subjectCode")
   .delete(deleteRecord)
   .patch(updateRecord);
+router.route("/notif").post(postAnnouncement);
+router.route("/notif/:subjectCode").get(getAnnouncements);
+router.route("/notif/:subjectCode/:id").delete(removeAnnouncement);
 
 module.exports = router;
