@@ -471,8 +471,8 @@ components:
         password:
           type: string
       example:
-        email: 2020csb1063@iitrpr.ac.in
-        password: 2020csb1063
+        email: abc@xyz.in
+        password: abcdefgh
     SuperRegisterUserRequest:
       title: SuperRegisterUserRequest
       required:
@@ -488,8 +488,8 @@ components:
         degree:
           type: string
       example:
-        name: Abhijith
-        entryNumber: 2020csb1064
+        name: xyz
+        entryNumber: abcdefgh
         degree: PhD
     LoginAdminRequest:
       title: LoginAdminRequest
@@ -503,8 +503,8 @@ components:
         password:
           type: string
       example:
-        email: john@iitrpr.ac.in
-        password: cout<<123TR
+        email: abc@xyz.com
+        password: something
     RegisterAdminRequest:
       title: RegisterAdminRequest
       required:
@@ -517,8 +517,8 @@ components:
         email:
           type: string
       example:
-        name: Adam Joseph
-        email: adam@iitrpr.ac.in
+        name: abcd
+        email: abc@xyz.com
     ChangeUserPasswordRequest:
       title: ChangeUserPasswordRequest
       required:
@@ -531,8 +531,8 @@ components:
         newPassword:
           type: string
       example:
-        password: iitropar
-        newPassword: 2020csb1063
+        password: something
+        newPassword: somethingelse
     ChangeAdminPasswordRequest:
       title: ChangeAdminPasswordRequest
       required:
@@ -545,8 +545,8 @@ components:
         newPassword:
           type: string
       example:
-        password: iitropar
-        newPassword: cout<<123TR
+        password: something
+        newPassword: somethingelse
     AdminCreateRecordRequest:
       title: AdminCreateRecordRequest
       required:
@@ -565,9 +565,9 @@ components:
         semester:
           type: string
       example:
-        entryNumber: 2020CSB1062
+        entryNumber: abcdefgh
         grade: B
-        subjectCode: cs201
+        subjectCode: abcde
         semester: "3"
     AdminUpdateSingleRecordRequest:
       title: AdminUpdateSingleRecordRequest
@@ -591,7 +591,7 @@ components:
         subjectName:
           type: string
       example:
-        subjectCode: Cs201
+        subjectCode: abcde
         subjectName: DSA
     AdminPostNotificationsRequest:
       title: AdminPostNotificationsRequest
@@ -605,8 +605,8 @@ components:
         announcement:
           type: string
       example:
-        subjectCode: CS204
-        announcement: Midsem on April End
+        subjectCode: abcde
+        announcement: something
   securitySchemes:
     bearer:
       type: http
