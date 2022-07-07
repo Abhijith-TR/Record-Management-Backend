@@ -1,12 +1,19 @@
-const { BadRequestError } = require("../errors");
+const { BadRequestError, NotFoundError, ForbiddenError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const mongoose = require("mongoose");
 const Announcement = require("../models/announcements");
+const CourseName = require("../models/courseName");
+const Data = require("../models/data");
 
 const postAnnouncement = async (req, res) => {
   const { adminId } = req.user;
   const { announcement, subjectCode } = req.body;
   if (!announcement || !subjectCode) {
     throw new BadRequestError("Please enter valid credentials");
+  }
+  const subject = await CourseName.findOne({ subjectCode });
+  if (!subject) {
+    throw new NotFoundError("Subject does not exist");
   }
   await Announcement.create({
     subjectCode,
@@ -20,6 +27,22 @@ const getAnnouncements = async (req, res) => {
   const { subjectCode } = req.params;
   if (!subjectCode) {
     throw new BadRequestError("Enter valid subject code");
+  }
+  const subject = await CourseName.findOne({ subjectCode });
+  if (!subject) {
+    throw new NotFoundError("Subject does not exist");
+  }
+  // If the request came from a user who is not an admin, he is only allowed to access notifications
+  // if he is currently enrolled i.e., his grade in the course is '-'
+  if (!req.user.isAdmin) {
+    const data = await Data.find({
+      entryNumber: req.user.entryNumber,
+      subjectCode,
+      grade: "-",
+    });
+    if (data.length === 0) {
+      throw new ForbiddenError("Cannot access records for unenrolled courses");
+    }
   }
   let notif = await Announcement.find({ subjectCode })
     .sort("createdAt")

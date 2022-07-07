@@ -1,0 +1,531 @@
+openapi: 3.0.0
+info:
+  title: IRMS
+  contact: {}
+  version: "1.0"
+servers:
+  - url: https://irms-server.herokuapp.com/api
+    variables: {}
+paths:
+  /authorize/user:
+    post:
+      tags:
+        - User
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUserRequest"
+            example:
+              email: abc@xyz.com
+              password: abcd
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /user/change:
+    patch:
+      tags:
+        - User
+      summary: Change User Password
+      operationId: ChangeUserPassword
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeUserPasswordRequest"
+            example:
+              password: something
+              newPassword: somethingNew
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /user/records/{entryNumber}:
+    get:
+      parameters:
+        - in: path
+          name: entryNumber # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The entry number
+      tags:
+        - User
+      summary: User Single Record
+      operationId: UserSingleRecord
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/register/user:
+    post:
+      tags:
+        - Super
+      summary: Super Register User
+      operationId: SuperRegisterUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SuperRegisterUserRequest"
+            example:
+              name: John Doe
+              entryNumber: "1234"
+              degree: M.Tech
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /super/register/admin:
+    post:
+      tags:
+        - Super
+      summary: Super Register Admin
+      operationId: SuperRegisterAdmin
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterAdminRequest"
+            example:
+              name: Schindler
+              email: abc@xyz.com
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /super/delete/records/{subjectCode}:
+    delete:
+      parameters:
+        - in: path
+          name: subjectCode # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The subject code
+      tags:
+        - Super
+      summary: Super Delete Subject
+      operationId: SuperDeleteSubject
+
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /super/delete/user/{entryNumber}:
+    delete:
+      parameters:
+        - in: path
+          name: entryNumber # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The entry number
+      tags:
+        - Super
+      summary: Super Delete User
+      operationId: SuperDeleteUser
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /super/delete/admin/{email}:
+    delete:
+      parameters:
+        - in: path
+          name: email # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: Email of the admin
+      tags:
+        - Super
+      summary: Super Delete Admin
+      operationId: SuperDeleteAdmin
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /authorize/admin:
+    post:
+      tags:
+        - Admin
+      summary: Login Admin
+      operationId: LoginAdmin
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginAdminRequest"
+            example:
+              email: abc@xyc.com
+              password: abcd
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /admin/change:
+    patch:
+      tags:
+        - Admin
+      summary: Change Admin Password
+      operationId: ChangeAdminPassword
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeAdminPasswordRequest"
+            example:
+              password: something
+              newPassword: somethingNew
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/records/get/{entryNumber}:
+    get:
+      parameters:
+        - in: path
+          name: entryNumber # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The entry number
+      tags:
+        - Admin
+      summary: Admin Single Record
+      operationId: AdminSingleRecord
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/records/{subjectCode}:
+    get:
+      parameters:
+        - in: path
+          name: subjectCode # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The subject code
+      tags:
+        - Admin
+      summary: Admin All Records
+      operationId: AdminAllRecords
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/records/{entryNumber}/{subjectCode}:
+    delete:
+      parameters:
+        - in: path
+          name: entryNumber # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The entry number
+        - in: path
+          name: subjectCode
+          required: true
+          schema:
+            type: string
+          description: The subject code
+      tags:
+        - Admin
+      summary: Admin Delete Single Record
+      operationId: AdminDeleteSingleRecord
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    patch:
+      parameters:
+        - in: path
+          name: entryNumber # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The entry number
+        - in: path
+          name: subjectCode
+          required: true
+          schema:
+            type: string
+          description: The subject code
+      tags:
+        - Admin
+      summary: Admin Update Single Record
+      operationId: AdminUpdateSingleRecord
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUpdateSingleRecordRequest"
+            example:
+              grade: F
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/single:
+    post:
+      tags:
+        - Admin
+      summary: Admin Create Record
+      operationId: AdminCreateRecord
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCreateRecordRequest"
+            example:
+              entryNumber: "1234"
+              grade: F
+              subjectCode: CS623
+              semester: "4"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/records:
+    post:
+      tags:
+        - Admin
+      summary: Admin Create Subject
+      operationId: AdminCreateSubject
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminCreateSubjectRequest"
+            example:
+              subjectCode: CS623
+              subjectName: astronomical theory
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+components:
+  schemas:
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: 2020csb1063@iitrpr.ac.in
+        password: 2020csb1063
+    SuperRegisterUserRequest:
+      title: SuperRegisterUserRequest
+      required:
+        - name
+        - entryNumber
+        - degree
+      type: object
+      properties:
+        name:
+          type: string
+        entryNumber:
+          type: string
+        degree:
+          type: string
+      example:
+        name: Abhijith
+        entryNumber: 2020csb1063
+        degree: PhD
+    LoginAdminRequest:
+      title: LoginAdminRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: john@iitrpr.ac.in
+        password: iitropar
+    RegisterAdminRequest:
+      title: RegisterAdminRequest
+      required:
+        - name
+        - email
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      example:
+        name: Adam Joseph
+        email: adam@iitrpr.ac.in
+    ChangeUserPasswordRequest:
+      title: ChangeUserPasswordRequest
+      required:
+        - password
+        - newPassword
+      type: object
+      properties:
+        password:
+          type: string
+        newPassword:
+          type: string
+      example:
+        password: iitropar
+        newPassword: 2020csb1063
+    ChangeAdminPasswordRequest:
+      title: ChangeAdminPasswordRequest
+      required:
+        - password
+        - newPassword
+      type: object
+      properties:
+        password:
+          type: string
+        newPassword:
+          type: string
+      example:
+        password: abhijith
+        newPassword: iitropar
+    AdminCreateRecordRequest:
+      title: AdminCreateRecordRequest
+      required:
+        - entryNumber
+        - grade
+        - subjectCode
+        - semester
+      type: object
+      properties:
+        entryNumber:
+          type: string
+        grade:
+          type: string
+        subjectCode:
+          type: string
+        semester:
+          type: string
+      example:
+        entryNumber: 2020CSB1063
+        grade: A-
+        subjectCode: cs204
+        semester: "4"
+    AdminUpdateSingleRecordRequest:
+      title: AdminUpdateSingleRecordRequest
+      required:
+        - grade
+      type: object
+      properties:
+        grade:
+          type: string
+      example:
+        grade: A
+    AdminCreateSubjectRequest:
+      title: AdminCreateSubjectRequest
+      required:
+        - subjectCode
+        - subjectName
+      type: object
+      properties:
+        subjectCode:
+          type: string
+        subjectName:
+          type: string
+      example:
+        subjectCode: ma201
+        subjectName: differential equations
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+  - name: User
+    description: ""
+  - name: Super
+    description: ""
+  - name: Admin
+    description: ""
