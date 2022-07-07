@@ -11,8 +11,8 @@ paths:
     post:
       tags:
         - User
-      summary: Login User
-      operationId: LoginUser
+      summary: Login
+      operationId: Login
       parameters: []
       requestBody:
         description: ""
@@ -21,7 +21,7 @@ paths:
             schema:
               $ref: "#/components/schemas/LoginUserRequest"
             example:
-              email: abc@xyz.com
+              email: xyz@abc.com
               password: abcd
         required: true
       responses:
@@ -44,8 +44,8 @@ paths:
             schema:
               $ref: "#/components/schemas/ChangeUserPasswordRequest"
             example:
-              password: something
-              newPassword: somethingNew
+              password: abcd
+              newPassword: efgh
         required: true
       responses:
         "200":
@@ -56,17 +56,37 @@ paths:
         - bearer: []
   /user/records/{entryNumber}:
     get:
-      parameters:
-        - in: path
-          name: entryNumber # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The entry number
       tags:
         - User
-      summary: User Single Record
-      operationId: UserSingleRecord
+      parameters:
+        - in: path
+          name: entryNumber
+          schema:
+            type: string
+          required: true
+          description: Entry Number of the user to login
+      summary: Get Records
+      operationId: GetRecords
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /user/notif/{subjectCode}:
+    get:
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: subjectCode
+          schema:
+            type: string
+          required: true
+          description: Subject code
+      summary: Get Notifications
+      operationId: GetNotifications
       responses:
         "200":
           description: ""
@@ -78,8 +98,8 @@ paths:
     post:
       tags:
         - Super
-      summary: Super Register User
-      operationId: SuperRegisterUser
+      summary: Register User
+      operationId: RegisterUser
       parameters: []
       requestBody:
         description: ""
@@ -88,9 +108,9 @@ paths:
             schema:
               $ref: "#/components/schemas/SuperRegisterUserRequest"
             example:
-              name: John Doe
-              entryNumber: "1234"
-              degree: M.Tech
+              name: abcd
+              entryNumber: xyz123
+              degree: PhD
         required: true
       responses:
         "200":
@@ -103,8 +123,8 @@ paths:
     post:
       tags:
         - Super
-      summary: Super Register Admin
-      operationId: SuperRegisterAdmin
+      summary: Register Admin
+      operationId: RegisterAdmin
       parameters: []
       requestBody:
         description: ""
@@ -113,7 +133,7 @@ paths:
             schema:
               $ref: "#/components/schemas/RegisterAdminRequest"
             example:
-              name: Schindler
+              name: xyz
               email: abc@xyz.com
         required: true
       responses:
@@ -125,18 +145,17 @@ paths:
         - bearer: []
   /super/delete/records/{subjectCode}:
     delete:
-      parameters:
-        - in: path
-          name: subjectCode # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The subject code
       tags:
         - Super
-      summary: Super Delete Subject
-      operationId: SuperDeleteSubject
-
+      parameters:
+        - in: path
+          name: subjectCode
+          schema:
+            type: string
+          required: true
+          description: Subject Code
+      summary: Delete All Subject Records
+      operationId: DeleteAllSubjectRecords
       responses:
         "200":
           description: ""
@@ -146,17 +165,17 @@ paths:
         - bearer: []
   /super/delete/user/{entryNumber}:
     delete:
-      parameters:
-        - in: path
-          name: entryNumber # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The entry number
       tags:
         - Super
-      summary: Super Delete User
-      operationId: SuperDeleteUser
+      parameters:
+        - in: path
+          name: entryNumber
+          schema:
+            type: string
+          required: true
+          description: Entry number of the student
+      summary: Delete User
+      operationId: DeleteUser
       responses:
         "200":
           description: ""
@@ -166,17 +185,17 @@ paths:
         - bearer: []
   /super/delete/admin/{email}:
     delete:
-      parameters:
-        - in: path
-          name: email # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: Email of the admin
       tags:
         - Super
-      summary: Super Delete Admin
-      operationId: SuperDeleteAdmin
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+          required: true
+          description: Email of the admin
+      summary: Delete Admin
+      operationId: DeleteAdmin
       responses:
         "200":
           description: ""
@@ -188,8 +207,8 @@ paths:
     post:
       tags:
         - Admin
-      summary: Login Admin
-      operationId: LoginAdmin
+      summary: Login Admin / Super
+      operationId: LoginAdmin/Super
       parameters: []
       requestBody:
         description: ""
@@ -198,7 +217,7 @@ paths:
             schema:
               $ref: "#/components/schemas/LoginAdminRequest"
             example:
-              email: abc@xyc.com
+              email: abc@xyz.com
               password: abcd
         required: true
       responses:
@@ -211,8 +230,8 @@ paths:
     patch:
       tags:
         - Admin
-      summary: Change Admin Password
-      operationId: ChangeAdminPassword
+      summary: Change Admin / Super Password
+      operationId: ChangeAdmin/SuperPassword
       parameters: []
       requestBody:
         description: ""
@@ -221,8 +240,8 @@ paths:
             schema:
               $ref: "#/components/schemas/ChangeAdminPasswordRequest"
             example:
-              password: something
-              newPassword: somethingNew
+              password: abcd
+              newPassword: efgh
         required: true
       responses:
         "200":
@@ -233,17 +252,17 @@ paths:
         - bearer: []
   /admin/records/get/{entryNumber}:
     get:
-      parameters:
-        - in: path
-          name: entryNumber # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The entry number
       tags:
         - Admin
-      summary: Admin Single Record
-      operationId: AdminSingleRecord
+      parameters:
+        - in: path
+          name: entryNumber
+          schema:
+            type: string
+          required: true
+          description: Entry number of the student
+      summary: Get Single User Records
+      operationId: GetSingleUserRecords
       responses:
         "200":
           description: ""
@@ -253,43 +272,17 @@ paths:
         - bearer: []
   /admin/records/{subjectCode}:
     get:
-      parameters:
-        - in: path
-          name: subjectCode # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The subject code
       tags:
         - Admin
-      summary: Admin All Records
-      operationId: AdminAllRecords
-      responses:
-        "200":
-          description: ""
-          headers: {}
-      deprecated: false
-      security:
-        - bearer: []
-  /admin/records/{entryNumber}/{subjectCode}:
-    delete:
       parameters:
-        - in: path
-          name: entryNumber # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The entry number
         - in: path
           name: subjectCode
-          required: true
           schema:
             type: string
-          description: The subject code
-      tags:
-        - Admin
-      summary: Admin Delete Single Record
-      operationId: AdminDeleteSingleRecord
+          required: true
+          description: Subject code
+      summary: Get Subject-wise Records
+      operationId: GetSubject-wiseRecords
       responses:
         "200":
           description: ""
@@ -297,46 +290,12 @@ paths:
       deprecated: false
       security:
         - bearer: []
-    patch:
-      parameters:
-        - in: path
-          name: entryNumber # Note the name is the same as in the path
-          required: true
-          schema:
-            type: string
-          description: The entry number
-        - in: path
-          name: subjectCode
-          required: true
-          schema:
-            type: string
-          description: The subject code
-      tags:
-        - Admin
-      summary: Admin Update Single Record
-      operationId: AdminUpdateSingleRecord
-      requestBody:
-        description: ""
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AdminUpdateSingleRecordRequest"
-            example:
-              grade: F
-        required: true
-      responses:
-        "200":
-          description: ""
-          headers: {}
-      deprecated: false
-      security:
-        - bearer: []
-  /admin/single:
+  /admin/records/single:
     post:
       tags:
         - Admin
-      summary: Admin Create Record
-      operationId: AdminCreateRecord
+      summary: Create Record
+      operationId: CreateRecord
       parameters: []
       requestBody:
         description: ""
@@ -345,10 +304,57 @@ paths:
             schema:
               $ref: "#/components/schemas/AdminCreateRecordRequest"
             example:
-              entryNumber: "1234"
-              grade: F
-              subjectCode: CS623
-              semester: "4"
+              entryNumber: xyz
+              grade: B
+              subjectCode: abcde
+              semester: "3"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/records/{entryNumber}/{subjectCode}:
+    parameters:
+      - in: path
+        name: entryNumber
+        schema:
+          type: string
+        required: true
+        description: Entry Number
+      - in: path
+        name: subjectCode
+        schema:
+          type: string
+        required: true
+        description: Subject Code
+    delete:
+      tags:
+        - Admin
+      summary: Delete Single Record
+      operationId: DeleteSingleRecord
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    patch:
+      tags:
+        - Admin
+      summary: Update Grade
+      operationId: UpdateGrade
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUpdateSingleRecordRequest"
+            example:
+              grade: A
         required: true
       responses:
         "200":
@@ -361,8 +367,8 @@ paths:
     post:
       tags:
         - Admin
-      summary: Admin Create Subject
-      operationId: AdminCreateSubject
+      summary: Create Subject
+      operationId: CreateSubject
       parameters: []
       requestBody:
         description: ""
@@ -371,9 +377,79 @@ paths:
             schema:
               $ref: "#/components/schemas/AdminCreateSubjectRequest"
             example:
-              subjectCode: CS623
-              subjectName: astronomical theory
+              subjectCode: abcde
+              subjectName: DSA
         required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/notif:
+    post:
+      tags:
+        - Admin
+      summary: Post Notifications
+      operationId: PostNotifications
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminPostNotificationsRequest"
+            example:
+              subjectCode: abcde
+              announcement: Get Work Done
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/notif/{subjectCode}/{notificationID}:
+    delete:
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: subjectCode
+          schema:
+            type: string
+          required: true
+          description: Entry Number
+        - in: path
+          name: notificationID
+          schema:
+            type: string
+          required: true
+          description: ID of the Notification in Database
+      summary: Remove Notifications
+      operationId: RemoveNotifications
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/notif/{subjectCode}:
+    get:
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: subjectCode
+          schema:
+            type: string
+          required: true
+          description: Subject Code
+      summary: Get Notifications
+      operationId: GetNotifications1
       responses:
         "200":
           description: ""
@@ -413,7 +489,7 @@ components:
           type: string
       example:
         name: Abhijith
-        entryNumber: 2020csb1063
+        entryNumber: 2020csb1064
         degree: PhD
     LoginAdminRequest:
       title: LoginAdminRequest
@@ -428,7 +504,7 @@ components:
           type: string
       example:
         email: john@iitrpr.ac.in
-        password: iitropar
+        password: cout<<123TR
     RegisterAdminRequest:
       title: RegisterAdminRequest
       required:
@@ -469,8 +545,8 @@ components:
         newPassword:
           type: string
       example:
-        password: abhijith
-        newPassword: iitropar
+        password: iitropar
+        newPassword: cout<<123TR
     AdminCreateRecordRequest:
       title: AdminCreateRecordRequest
       required:
@@ -489,10 +565,10 @@ components:
         semester:
           type: string
       example:
-        entryNumber: 2020CSB1063
-        grade: A-
-        subjectCode: cs204
-        semester: "4"
+        entryNumber: 2020CSB1062
+        grade: B
+        subjectCode: cs201
+        semester: "3"
     AdminUpdateSingleRecordRequest:
       title: AdminUpdateSingleRecordRequest
       required:
@@ -515,14 +591,30 @@ components:
         subjectName:
           type: string
       example:
-        subjectCode: ma201
-        subjectName: differential equations
+        subjectCode: Cs201
+        subjectName: DSA
+    AdminPostNotificationsRequest:
+      title: AdminPostNotificationsRequest
+      required:
+        - subjectCode
+        - announcement
+      type: object
+      properties:
+        subjectCode:
+          type: string
+        announcement:
+          type: string
+      example:
+        subjectCode: CS204
+        announcement: Midsem on April End
   securitySchemes:
     bearer:
       type: http
       scheme: bearer
 security: []
 tags:
+  - name: Misc
+    description: ""
   - name: User
     description: ""
   - name: Super
