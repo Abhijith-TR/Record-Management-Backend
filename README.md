@@ -3,8 +3,7 @@
 - API to facilitate the management and viewing of academic records.
 - Involves three levels of users i.e., the super admin, the admin and the user.
 - Includes all CRUD functionality as well as access restrictions to records.
-- Developed using NodeJS and Express. Database on MongoDB Atlas. Hosted on [Heroku](https://irms-server.herokuapp.com/).
-- Note that the online API cannot be used unless you are registered by the super admin (in this case, me).
+- Developed using NodeJS and Express. Database on MongoDB Atlas.
 
 ## How to setup
 
@@ -27,11 +26,12 @@
 
 - NOTE: You can optionally set up a PORT in .env to run it on your local machine. The default port on the local machine will be 3000.
 
-## API Methods
+<!-- ## API Methods
 
-- Detailed documentation can be found [here](https://irms-server.herokuapp.com/docs/)
+- Detailed documentation can be found [here](https://irms-server.herokuapp.com/docs/) -->
 
 ## API Details
+
 - If request is made to set up the admin, default password will be PASS. If request is made to set up the user, the default password will be the entry number in lowercase.
 
 ## Additional Information
