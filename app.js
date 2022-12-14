@@ -63,7 +63,7 @@ app.use(errorHandler);
 app.use(handleMissingRoute);
 
 // port selection
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // connecting to database and starting the server
 const start = async () => {
