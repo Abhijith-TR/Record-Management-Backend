@@ -1,7 +1,9 @@
 const { UnauthenticatedError } = require("../errors");
 
-// middleware checks if the user is an admin
-// prevents requests from going through if the user is not an admin
+/**
+ * This function is used to check if the user is a super admin or not. If the user is
+ * not a super admin, it throws an error.
+ */
 const isSuper = (req, res, next) => {
   if (!req.user.isAdmin || !req.user.isSuper) {
     throw new UnauthenticatedError("User cannot access this resource");

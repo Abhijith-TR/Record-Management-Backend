@@ -4,6 +4,10 @@ const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const { UnauthenticatedError, BadRequestError } = require("../errors");
 
+/**
+ * This function is used to change the user password. It checks if the password
+ * is valid and if it is, it updates the password with the new password.
+ */
 const changeUserPassword = async (req, res) => {
   let { password, newPassword } = req.body;
   const { userId: _id, name } = req.user;
@@ -31,6 +35,10 @@ const changeUserPassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Password updated" });
 };
 
+/**
+ * This function is used to change the admin password. It checks if the password
+ * is valid and if it is, it updates the password with the new password.
+ */
 const changeAdminPassword = async (req, res) => {
   let { password, newPassword } = req.body;
   const { adminId: _id, name } = req.user;

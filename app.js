@@ -53,10 +53,7 @@ app.use("/api/admin", [authorizeAdmin, isAdmin], adminDataRouter);
 app.use("/api/super", [authorizeAdmin, isSuper], superAdminRouter);
 
 // testing route
-app.get("/", (req, res) => {
-  res.send("<h1>Hello There!</h1><a href='/docs'>API Documentation</a>");
-});
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 // middleware
 app.use(errorHandler);

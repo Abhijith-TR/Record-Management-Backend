@@ -5,6 +5,11 @@ const Announcement = require("../models/announcements");
 const CourseName = require("../models/courseName");
 const Data = require("../models/data");
 
+/**
+ * This function is used to post an announcement. It checks if the announcement
+ * and subject code are valid and if they are, it creates a new announcement with
+ * the given announcement and subject code.
+ */
 const postAnnouncement = async (req, res) => {
   const { adminId } = req.user;
   const { announcement, subjectCode } = req.body;
@@ -23,6 +28,12 @@ const postAnnouncement = async (req, res) => {
   res.status(StatusCodes.CREATED).send({ msg: "Announcement Created" });
 };
 
+/**
+ * This function is used to get announcements. It checks if the subject code is 
+ * valid and if it is, it returns all the announcements for that subject code. 
+ * If the user is not an admin, he is only allowed to access notifications if he
+ * is currently enrolled i.e., his grade in the course is '-'
+ */
 const getAnnouncements = async (req, res) => {
   const { subjectCode } = req.params;
   if (!subjectCode) {
@@ -32,8 +43,6 @@ const getAnnouncements = async (req, res) => {
   if (!subject) {
     throw new NotFoundError("Subject does not exist");
   }
-  // If the request came from a user who is not an admin, he is only allowed to access notifications
-  // if he is currently enrolled i.e., his grade in the course is '-'
   if (!req.user.isAdmin) {
     const data = await Data.find({
       entryNumber: req.user.entryNumber,
@@ -54,6 +63,12 @@ const getAnnouncements = async (req, res) => {
   });
 };
 
+/**
+ * This function is used to remove an announcement. It checks if the subject code
+ * and id are valid and if they are, it deletes the announcement with the given
+ * id. If the user is not a super admin, he is only allowed to delete the
+ * announcements he has created.
+ */
 const removeAnnouncement = async (req, res) => {
   let { subjectCode, id } = req.params;
   subjectCode = subjectCode.toUpperCase();

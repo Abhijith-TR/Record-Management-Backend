@@ -9,8 +9,12 @@ const {
   ForbiddenError,
 } = require("../errors");
 
-// separate from show records for an individual person to prevent
-// normal users from accessing this particular route
+/**
+ * This function is used to get records. It checks if the subject code is valid
+ * and if it is, it returns all the records for that subject code. Only the admin
+ * is allowed to access all the records. The user is only allowed to access his
+ * own records.
+*/
 const showRecords = async (req, res) => {
   let { subjectCode } = req.params;
   subjectCode = subjectCode.toUpperCase();
@@ -35,11 +39,15 @@ const showRecords = async (req, res) => {
   });
 };
 
+/**
+ * This function is used to get a single record. It checks if the entry number is
+ * valid and if it is, it returns all the records for that entry number. Only the
+ * admin is allowed to access all the records. The user is only allowed to access
+ * his own records.
+*/
 const showSingleRecord = async (req, res) => {
   let { entryNumber } = req.params;
   entryNumber = entryNumber.toUpperCase();
-  // if this was routed through user and the user is asking for someone elses records, then refuse
-  // if it is the admin, allow the request to continue
   if (req.user.isAdmin === false && entryNumber !== req.user.entryNumber) {
     throw new UnauthenticatedError(
       "Unauthorized to access another users records"
@@ -64,6 +72,11 @@ const showSingleRecord = async (req, res) => {
     .json({ msg: "Records returned", records, number: records.length });
 };
 
+/**
+ * This function is used to update a record. It checks if the entry number and
+ * subject code are valid and if they are, it updates the grade of the record.
+ * Only the admin who created the record is allowed to update it.
+*/
 const updateRecord = async (req, res) => {
   let { entryNumber, subjectCode } = req.params;
   const { grade } = req.body;
@@ -87,6 +100,11 @@ const updateRecord = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Record updated" });
 };
 
+/**
+ * This function is used to delete a record. It checks if the entry number and
+ * subject code are valid and if they are, it deletes the record. Only the admin
+ * who created the record is allowed to delete it.
+*/
 const deleteRecord = async (req, res) => {
   let { entryNumber, subjectCode } = req.params;
   entryNumber = entryNumber.toUpperCase();
@@ -105,6 +123,11 @@ const deleteRecord = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Successfully deleted record" });
 };
 
+/**
+ * This function is used to delete all records. It checks if the subject code is
+ * valid and if it is, it deletes all the records for that subject code. Only the
+ * super admin is allowed to delete all the records.
+*/
 const deleteAllRecord = async (req, res) => {
   let { subjectCode } = req.params;
   subjectCode = subjectCode.toUpperCase();
@@ -121,6 +144,11 @@ const deleteAllRecord = async (req, res) => {
   });
 };
 
+/**
+ * This function is used to create a record. It checks if the subject code, grade
+ * and entry number are valid and if they are, it creates a new record. It also
+ * checks if the subject code and entry number exist in the database.
+*/
 const createRecord = async (req, res) => {
   const { subjectCode, grade, entryNumber, semester } = req.body;
   if (!subjectCode || !grade || !entryNumber) {
@@ -149,6 +177,10 @@ const createRecord = async (req, res) => {
   res.status(StatusCodes.CREATED).send({ msg: "Record Inserted" });
 };
 
+/**
+ * This function is used to create a subject. It checks if the subject name and
+ * subject code are valid and if they are, it creates a new subject.
+*/
 const createSubject = async (req, res) => {
   const { subjectName, subjectCode } = req.body;
   if (!subjectName || !subjectCode) {

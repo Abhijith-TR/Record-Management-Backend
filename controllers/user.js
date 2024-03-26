@@ -7,6 +7,11 @@ const {
   NotFoundError,
 } = require("../errors");
 
+/**
+  * This function is used to login a user. It checks if the email and password are
+  * valid and if they are, it logs in the user and returns a token. If the user is
+  * not found or the password is incorrect, it returns an error.
+  */
 const userLogin = async (req, res) => {
   let { email, password } = req.body;
   email = email.toLowerCase();
@@ -25,6 +30,11 @@ const userLogin = async (req, res) => {
   res.status(StatusCodes.OK).json({ email, token, isAdmin: 0 });
 };
 
+/**
+ * This function is used to register a user. It checks if the name, entry number and
+ * degree are valid and if they are, it creates a new user with the given name, entry
+ * number, degree, email and password.
+ */
 const userRegister = async (req, res) => {
   const { name, entryNumber, degree } = req.body;
   const email = entryNumber + process.env.COLLEGE;
@@ -39,6 +49,11 @@ const userRegister = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "User Created" });
 };
 
+/**
+ * This function is used to remove a user. It checks if the entry number is valid and
+ * if it is, it deletes the user and all the records associated with that user. If the
+ * user is not found, it returns an error.
+ */
 const userRemove = async (req, res) => {
   const { entryNumber } = req.params;
   if (typeof entryNumber === undefined) {
