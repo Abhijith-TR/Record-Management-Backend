@@ -66,7 +66,7 @@ const adminRemove = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Admin removed" });
 };
 
-export default {
+module.exports = {
   adminLogin,
   adminRegister,
   adminRemove,
