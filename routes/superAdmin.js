@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { adminRegister, adminRemove } = require("../controllers/admin").default;
+const { adminRegister, adminRemove } = require("../controllers/admin");
 const { userRemove } = require("../controllers/user");
 const { deleteAllRecord } = require("../controllers/data");
 
