@@ -26,9 +26,9 @@
 
 - NOTE: You can optionally set up a PORT in .env to run it on your local machine. The default port on the local machine will be 3000.
 
-<!-- ## API Methods
+## API Methods
 
-- Detailed documentation can be found [here](https://irms-server.herokuapp.com/docs/) -->
+- Detailed documentation can be found [here](https://irms.onrender.com/)
 
 ## API Details
 
