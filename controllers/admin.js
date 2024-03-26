@@ -1,9 +1,13 @@
-const { findOne, create, deleteOne } = require("../models/admin");
-const { updateMany } = require("../models/data");
-const { deleteMany } = require("../models/announcements");
-const { Types } = require("mongoose");
+const Admin = require("../models/admin");
+const Data = require("../models/data");
+const Announcement = require("../models/announcements");
+const mongoose = require("mongoose");
 const { StatusCodes } = require("http-status-codes");
-const { BadRequestError, UnauthenticatedError, NotFoundError } = require("../errors");
+const {
+  BadRequestError,
+  UnauthenticatedError,
+  NotFoundError,
+} = require("../errors");
 
 /**
  * This function is used to login an admin. It checks if the email and password 
@@ -14,7 +18,7 @@ const adminLogin = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError("Please enter valid username and password");
   }
-  const admin = await findOne({ email });
+  const admin = await Admin.findOne({ email });
   if (!admin) {
     throw new UnauthenticatedError("Access Denied");
   }
@@ -36,7 +40,7 @@ const adminLogin = async (req, res) => {
 const adminRegister = async (req, res) => {
   const { name, email } = req.body;
   const password = process.env.PASS;
-  const admin = await create({ name, email, password });
+  const admin = await Admin.create({ name, email, password });
   res.status(StatusCodes.CREATED).send({ msg: "Admin created" });
 };
 
@@ -50,16 +54,16 @@ const adminRegister = async (req, res) => {
  */
 const adminRemove = async (req, res) => {
   const { email } = req.params;
-  const check = await findOne({ email });
+  const check = await Admin.findOne({ email });
   const val = check._id;
-  const replace = new Types.ObjectId(req.user.adminId);
-  const data = await updateMany(
+  const replace = new mongoose.Types.ObjectId(req.user.adminId);
+  const data = await Data.updateMany(
     { createdBy: val },
     { createdBy: replace },
     { runValidators: true, new: true }
   );
-  const notif = await deleteMany({ createdBy: val });
-  const admin = await deleteOne({ email });
+  const notif = await Announcement.deleteMany({ createdBy: val });
+  const admin = await Admin.deleteOne({ email });
   if (admin.deletedCount === 0) {
     throw new NotFoundError("Admin not found with given email");
   }
