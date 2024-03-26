@@ -1,6 +1,5 @@
 const { BadRequestError, NotFoundError, ForbiddenError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
-const mongoose = require("mongoose");
 const Announcement = require("../models/announcements");
 const CourseName = require("../models/courseName");
 const Data = require("../models/data");

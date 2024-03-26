@@ -1,9 +1,9 @@
-import { findOne, create, deleteOne } from "../models/admin";
-import { updateMany } from "../models/data";
-import { deleteMany } from "../models/announcements";
-import { Types } from "mongoose";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnauthenticatedError, NotFoundError } from "../errors";
+const { findOne, create, deleteOne } = require("../models/admin");
+const { updateMany } = require("../models/data");
+const { deleteMany } = require("../models/announcements");
+const { Types } = require("mongoose");
+const { StatusCodes } = require("http-status-codes");
+const { BadRequestError, UnauthenticatedError, NotFoundError } = require("../errors");
 
 /**
  * This function is used to login an admin. It checks if the email and password 
